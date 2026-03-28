@@ -53,6 +53,12 @@ npm run build
 npm start
 ```
 
+## Deployment Options
+
+- Docker
+- systemd user unit (`systemctl --user`)
+- systemd system unit (`sudo systemctl`)
+
 ## Configuration
 
 Primary environment variables:
@@ -79,6 +85,7 @@ node dist/index.js --help
 docker build -t codex-cli-bridge:local .
 
 docker run --rm --network host \
+  --env-file .env.example \
   -e CODEX_CLI_BRIDGE_HOST=127.0.0.1 \
   -e CODEX_CLI_BRIDGE_PORT=11434 \
   -v "$HOME/.codex:/home/node/.codex" \
@@ -98,6 +105,23 @@ cp .env.example ~/.config/codex-cli-bridge.env
 systemctl --user daemon-reload
 systemctl --user enable --now codex-cli-bridge.service
 ```
+
+## systemd (System Unit)
+
+Unit template: `systemd/codex-cli-bridge.system.service`
+
+```bash
+sudo cp systemd/codex-cli-bridge.system.service /etc/systemd/system/codex-cli-bridge.service
+sudo cp .env.example /etc/default/codex-cli-bridge
+sudo systemctl daemon-reload
+sudo systemctl enable --now codex-cli-bridge.service
+```
+
+After copying, edit `/etc/systemd/system/codex-cli-bridge.service` and set:
+
+- `User` and `Group`
+- `WorkingDirectory`
+- `ExecStart` path
 
 ## Smoke Test
 

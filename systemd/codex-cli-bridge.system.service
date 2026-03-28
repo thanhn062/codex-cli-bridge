@@ -1,0 +1,20 @@
+[Unit]
+Description=Codex CLI Bridge (Ollama-compatible HTTP)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Set these to the account that owns the bridge directory and Codex auth state.
+User=codex
+Group=codex
+WorkingDirectory=/opt/codex-cli-bridge
+EnvironmentFile=-/etc/default/codex-cli-bridge
+ExecStart=/usr/bin/env node /opt/codex-cli-bridge/dist/index.js
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
