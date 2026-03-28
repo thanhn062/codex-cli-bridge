@@ -1,0 +1,19 @@
+services:
+  codex-cli-bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codex-cli-bridge
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      CODEX_CLI_BRIDGE_HOST: 127.0.0.1
+      CODEX_CLI_BRIDGE_PORT: 11434
+      CODEX_CLI_BRIDGE_MODEL: codex
+      CODEX_CLI_BRIDGE_CODEX_BIN: codex
+      CODEX_CLI_BRIDGE_CODEX_FORMAT: text
+      CODEX_CLI_BRIDGE_TIMEOUT_SECONDS: 90
+      CODEX_CLI_BRIDGE_MAX_BODY_BYTES: 32768
+      CODEX_CLI_BRIDGE_MAX_CONCURRENT_REQUESTS: 1
+    volumes:
+      - ${HOME}/.codex:/home/node/.codex

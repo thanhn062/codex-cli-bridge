@@ -1,0 +1,17 @@
+[Unit]
+Description=Codex CLI Bridge (Ollama-compatible HTTP)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/codex-cli-bridge
+EnvironmentFile=-%h/.config/codex-cli-bridge.env
+ExecStart=/usr/bin/env node %h/codex-cli-bridge/dist/index.js
+Restart=always
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target
